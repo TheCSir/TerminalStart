@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "TerminalStart",
+  "version": "1.0.0",
+  "description": "A beautiful, customizable TUI-style new tab dashboard with widgets, themes, and more.",
+  "icons": {
+    "48": "icon48.png",
+    "96": "icon96.png"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "host_permissions": [
+    "*://query1.finance.yahoo.com/*",
+    "*://finnhub.io/*",
+    "*://api.twelvedata.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' data: https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src *;"
+  }
+}

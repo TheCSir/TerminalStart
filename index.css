@@ -1,0 +1,372 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --widget-radius: 0px;
+}
+
+/* consistent radius for widget containers */
+.widget-rounded,
+.modal-rounded,
+.panel-rounded {
+    border-radius: var(--widget-radius) !important;
+    transition: border-radius 200ms ease;
+}
+
+/* force square corners */
+.no-radius {
+    border-radius: 0px !important;
+}
+
+/* link arrow animations */
+.link-arrow {
+    display: inline-block;
+    transition: color 20ms;
+    animation: arrow-exit 400ms ease-out;
+}
+
+/* hover: entry spin (once) then scrolling marquee loop (after 400ms delay) */
+a:hover .link-arrow {
+    text-shadow: 0 0 8px var(--color-accent);
+    animation: arrow-enter 400ms ease-out,
+               arrow-scroll 1s ease-in-out 400ms infinite;
+}
+
+/* entry spin – 360° clockwise with glow ramping up */
+@keyframes arrow-enter {
+    0%   { transform: rotate(0deg)   scale(1);    text-shadow: 0 0 0px transparent;         }
+    20%  { transform: rotate(72deg)  scale(1.1);  text-shadow: 0 0 4px var(--color-accent); }
+    50%  { transform: rotate(180deg) scale(0.85); text-shadow: 0 0 6px var(--color-accent); }
+    100% { transform: rotate(360deg) scale(1);    text-shadow: 0 0 8px var(--color-accent); }
+}
+
+/* hover loop – slide right & fade, reappear from left */
+@keyframes arrow-scroll {
+    0%  { transform: translateX(0)    rotate(0);    opacity: 1; }
+    40% { transform: translateX(12px) rotate(0);    opacity: 0; }
+    41% { transform: translateX(-8px) rotate(0);    opacity: 0; }
+    75% { transform: translateX(0)    rotate(0);    opacity: 1; }
+    100%{ transform: translateX(0)    rotate(0);    opacity: 1; }
+}
+
+/* exit spin – 360° clockwise with glow fading out */
+@keyframes arrow-exit {
+    0%   { transform: rotate(0deg)   scale(1);   text-shadow: 0 0 8px var(--color-accent); }
+    50%  { transform: rotate(180deg) scale(0.85); text-shadow: 0 0 6px var(--color-accent); }
+    80%  { transform: rotate(360deg) scale(1.1);  text-shadow: 0 0 3px var(--color-accent); }
+    100% { transform: rotate(360deg) scale(1);    text-shadow: 0 0 0px transparent;         }
+}
+
+/* category header hover animations */
+.category-prefix {
+    display: inline-block;
+    transition: opacity 200ms ease;
+}
+
+.link-group:hover .category-prefix {
+    opacity: 1;
+    text-shadow: 0 0 8px var(--color-accent);
+    animation: prefix-enter 300ms ease-out;
+}
+
+@keyframes prefix-enter {
+    0%   { transform: scale(1);   text-shadow: 0 0 0px transparent; }
+    50%  { transform: scale(1.3); text-shadow: 0 0 12px var(--color-accent); }
+    100% { transform: scale(1);   text-shadow: 0 0 8px var(--color-accent); }
+}
+
+/* per-character scan animation */
+.category-char {
+    display: inline-block;
+    transition: color 200ms ease;
+}
+
+.link-group:hover .category-char {
+    animation: char-scan 300ms step-end both;
+    animation-delay: calc(var(--char-index) * 40ms);
+}
+
+@keyframes char-scan {
+    0%   { color: var(--color-muted); text-shadow: none; }
+    50%  { color: var(--color-accent); text-shadow: 0 0 6px var(--color-accent); }
+    100% { color: rgba(255, 255, 255, 0.6); text-shadow: none; }
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+}
+
+/* grid layout */
+.react-grid-layout {
+    position: relative;
+    transition: height 200ms ease;
+}
+
+.react-grid-item {
+    transition: all 200ms ease;
+    transition-property: left, top, width, height;
+}
+
+.react-grid-item.cssTransforms {
+    transition-property: transform, width, height;
+}
+
+.react-grid-item.resizing {
+    transition: none !important;
+    z-index: 100;
+    box-shadow: none !important;
+    border: 1px solid var(--color-accent) !important;
+}
+
+/* suppress transitions on initial load */
+.layout.no-animate,
+.layout.no-animate .react-grid-item,
+.layout.no-animate .react-grid-item.cssTransforms {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* hide items until layout is computed */
+.layout.grid-hidden .react-grid-item {
+    visibility: hidden !important;
+}
+
+.react-grid-item.react-draggable-dragging {
+    transition: none !important;
+    z-index: 100;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid var(--color-accent) !important;
+}
+
+.react-grid-item.react-grid-placeholder {
+    transition: none !important;
+    z-index: 90;
+    background: var(--color-accent) !important;
+    opacity: 0.15 !important;
+    border: 1px dashed var(--color-accent) !important;
+    border-radius: var(--widget-radius);
+    box-shadow: none !important;
+}
+
+/* resize handles */
+.react-resizable-handle {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    z-index: 20;
+    background: transparent;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.react-resizable-handle:hover {
+    opacity: 1;
+}
+
+.layout.hide-handles .react-resizable-handle {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+.react-resizable-handle::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    box-sizing: border-box;
+}
+
+.react-resizable-handle-se {
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+}
+
+.react-resizable-handle-se::after {
+    border-width: 0 2px 2px 0;
+    bottom: 4px;
+    right: 4px;
+}
+
+.react-resizable-handle-sw {
+    bottom: 0;
+    left: 0;
+    cursor: sw-resize;
+}
+
+.react-resizable-handle-sw::after {
+    border-width: 0 0 2px 2px;
+    bottom: 4px;
+    left: 4px;
+}
+
+.react-resizable-handle-nw {
+    top: 0;
+    left: 0;
+    cursor: nw-resize;
+}
+
+.react-resizable-handle-nw::after {
+    border-width: 2px 0 0 2px;
+    top: 4px;
+    left: 4px;
+}
+
+.react-resizable-handle-ne {
+    top: 0;
+    right: 0;
+    cursor: ne-resize;
+}
+
+.react-resizable-handle-ne::after {
+    border-width: 2px 2px 0 0;
+    top: 4px;
+    right: 4px;
+}
+
+/* CRT theme */
+.theme-crt .font-digital {
+    font-family: 'DSEG7 Classic', monospace;
+    text-shadow: 0 0 5px currentColor;
+    letter-spacing: 0.05em;
+    font-style: italic;
+}
+
+.theme-crt {
+    text-shadow: 1px 0 0 rgba(255, 0, 0, 0.4), -1px 0 0 rgba(0, 0, 255, 0.4);
+    overflow: hidden;
+}
+
+.crt-curve-container {
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    pointer-events: none;
+    background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+.crt-scanlines {
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.3) 50%,
+            rgba(0, 0, 0, 0.3));
+    background-size: 100% 4px;
+    position: fixed;
+    inset: 0;
+    z-index: 9992;
+    pointer-events: none;
+}
+
+.crt-scanlines::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15vh;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0));
+    animation: scanline-drop 8s linear infinite;
+}
+
+@keyframes scanline-drop {
+    0% {
+        top: -20%;
+    }
+
+    100% {
+        top: 120%;
+    }
+}
+
+.crt-noise {
+    position: fixed;
+    inset: 0;
+    z-index: 9993;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 3px 3px;
+    animation: crt-noise-anim 0.5s infinite linear;
+}
+
+.crt-flicker {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.01);
+    z-index: 9994;
+    pointer-events: none;
+    animation: crt-flicker-anim 0.1s infinite;
+}
+
+@keyframes crt-noise-anim {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-3px, 3px);
+    }
+
+    50% {
+        transform: translate(3px, -3px);
+    }
+
+    75% {
+        transform: translate(-3px, -3px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes crt-flicker-anim {
+    0% {
+        opacity: 0.98;
+    }
+
+    50% {
+        opacity: 1.0;
+    }
+
+    100% {
+        opacity: 0.99;
+    }
+}
+
+/* settings guard — invisible placeholder */
+.settings-guard-item {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    z-index: -1 !important;
+}
+
+.settings-guard-item .react-resizable-handle {
+    display: none !important;
+}

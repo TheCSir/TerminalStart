@@ -1,0 +1,10 @@
+/* prevent FOUC */
+html {
+    background-color: var(--color-bg, #222222);
+    color: var(--color-fg, #aaaaaa);
+}
+
+body {
+    background-color: var(--color-bg, #222222);
+    color: var(--color-fg, #aaaaaa);
+}
