@@ -165,7 +165,7 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
 
 
             <div className="border border-[var(--color-border)] p-4">
-                <h3 className="text-[var(--color-accent)] font-bold mb-2">Stats Widget Style</h3>
+                <h3 className="text-[var(--color-accent)] font-bold mb-2">Status Widget Style</h3>
                 <div className="flex flex-col sm:flex-row gap-4 flex-wrap">
                     <div onClick={() => onStatsModeChange('text')} className="flex items-center gap-2 cursor-pointer select-none group">
                         <span className="font-mono text-[var(--color-accent)] font-bold">

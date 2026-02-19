@@ -46,14 +46,6 @@ export interface LinkGroup {
   links: Link[];
 }
 
-export interface RealStats {
-    os: string;
-    browser: string;
-    gpu: string;
-    cores: number;
-    memoryGB: number | null;
-    network: { type: string; downlink: number | null };
-}
 
 export type MarketProvider = 'yahoo' | 'finnhub' | 'twelvedata';
 

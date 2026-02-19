@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Responsive, Layout } from 'react-grid-layout';
 // @ts-ignore
 import { WidthProvider } from 'react-grid-layout';
@@ -25,6 +25,82 @@ import { ThemeMaker } from './components/ThemeMaker';
 import { AppProvider, useAppContext } from './contexts/AppContext';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
+
+const GLITCH_CHARS = '!@#$%^&*_+-=[]{}|;:<>?/~';
+const LABEL = '~/CSir.info';
+
+function Attribution() {
+  const [display, setDisplay] = useState('');
+  const [typed, setTyped] = useState(false);
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const isHovering = useRef(false);
+  const glitchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Typewriter on mount
+  useEffect(() => {
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setDisplay(LABEL.slice(0, i));
+      if (i >= LABEL.length) {
+        clearInterval(id);
+        setTyped(true);
+      }
+    }, 80);
+    return () => clearInterval(id);
+  }, []);
+
+  // Blinking cursor after typing
+  useEffect(() => {
+    if (!typed) return;
+    const id = setInterval(() => setCursorVisible(v => !v), 530);
+    return () => clearInterval(id);
+  }, [typed]);
+
+  const scramble = useCallback(() => {
+    let tick = 0;
+    const maxTicks = 6;
+    const run = () => {
+      if (!isHovering.current || tick >= maxTicks) {
+        setDisplay(LABEL);
+        return;
+      }
+      tick++;
+      setDisplay(
+        LABEL.split('').map((ch, i) =>
+          i < tick ? ch : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
+        ).join('')
+      );
+      glitchTimer.current = setTimeout(run, 50);
+    };
+    run();
+  }, []);
+
+  const handleMouseEnter = () => {
+    isHovering.current = true;
+    if (typed) scramble();
+  };
+
+  const handleMouseLeave = () => {
+    isHovering.current = false;
+    if (glitchTimer.current) clearTimeout(glitchTimer.current);
+    setDisplay(LABEL);
+  };
+
+  return (
+    <a
+      href="https://github.com/TheCSir/TerminalStart"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-2 right-3 font-mono text-[10px] text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors duration-200 opacity-40 hover:opacity-100 select-none z-50 no-underline"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {display}
+      <span className={typed && cursorVisible ? 'opacity-100' : 'opacity-0'}>_</span>
+    </a>
+  );
+}
 
 function AppContent() {
   const {
@@ -128,14 +204,14 @@ function AppContent() {
                         ? (type === 'life' ? 'conway.life' :
                            type === 'donut' ? 'donut.c' :
                            type === 'pipes' ? 'pipes.scr' :
-                           type === 'matrix' ? 'matrix' :
+                           type === 'matrix' ? 'matrix.cs' :
                            type === 'snake' ? 'snake.exe' :
                            type === 'fireworks' ? 'fireworks.py' :
                            type === 'starfield' ? 'starfield.scr' :
                            type === 'rain' ? 'rain.sh' :
                            type === 'maze' ? 'maze.gen' :
                            type === 'market' ? 'stocks.info' : type)
-                        : (type === 'todo' ? 'todo-list' : type === 'search' ? 'web_search' : type)
+                        : (type === 'todo' ? 'todo.txt' : type === 'search' ? 'search.ai' : type === 'links' ? 'links.href' : type === 'weather' ? 'forecast.py' : type === 'datetime' ? 'clock.sys' : type)
                 ),
                 showTitle: showWidgetTitles,
                 onClose: isExtra ? () => removeExtraWidget(key) : undefined
@@ -143,17 +219,17 @@ function AppContent() {
 
             switch (type) {
                 case 'search':
-                    return <TuiBox {...boxProps} title="web_search"><SearchWidget /></TuiBox>;
+                    return <TuiBox {...boxProps} title="search.ai"><SearchWidget /></TuiBox>;
                 case 'datetime':
-                    return <TuiBox {...boxProps} title="datetime"><DateTimeWidget /></TuiBox>;
+                    return <TuiBox {...boxProps} title="clock.sys"><DateTimeWidget /></TuiBox>;
                 case 'stats':
-                    return <TuiBox {...boxProps} title="stats"><StatsWidget mode={statsMode} /></TuiBox>;
+                    return <TuiBox {...boxProps} title="status.exe"><StatsWidget mode={statsMode} /></TuiBox>;
                 case 'weather':
-                    return <TuiBox {...boxProps} title="weather"><WeatherWidget mode={weatherMode} unit={tempUnit} /></TuiBox>;
+                    return <TuiBox {...boxProps} title="forecast.py"><WeatherWidget mode={weatherMode} unit={tempUnit} /></TuiBox>;
                 case 'todo':
-                    return <TuiBox {...boxProps} title="todo-list"><TodoWidget tasks={todos} setTasks={setTodos} /></TuiBox>;
+                    return <TuiBox {...boxProps} title="todo.txt"><TodoWidget tasks={todos} setTasks={setTodos} /></TuiBox>;
                 case 'links':
-                    return <TuiBox {...boxProps} title="links"><LinksWidget groups={linkGroups} openInNewTab={openInNewTab} /></TuiBox>;
+                    return <TuiBox {...boxProps} title="links.href"><LinksWidget groups={linkGroups} openInNewTab={openInNewTab} /></TuiBox>;
                 case 'donut':
                     return <TuiBox {...boxProps}><DonutWidget speed={funOptions.donut.speed} /></TuiBox>;
                 case 'matrix':
@@ -181,6 +257,7 @@ function AppContent() {
 
         </ResponsiveGridLayout>
       </div>
+      <Attribution />
     </div>
   );
 }
