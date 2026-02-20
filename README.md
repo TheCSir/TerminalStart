@@ -11,11 +11,11 @@
 </p>
 
 <p align="center">
-  <img src="ScreenShots/mainPage.png" width="900" alt="TerminalStart Preview">
+  <img src="screenShots/mainPage.png" width="900" alt="TerminalStart Preview">
 </p>
 
 <p align="center">
-  <img src="ScreenShots/settingsPage.png" width="900" alt="TerminalStart Settings">
+  <img src="screenShots/settingsPage.png" width="900" alt="TerminalStart Settings">
 </p>
 
 ---
