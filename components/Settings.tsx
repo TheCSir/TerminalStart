@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { SettingsThemesTab } from './settings/SettingsThemesTab';
 import { SettingsWidgetsTab } from './settings/SettingsWidgetsTab';
-import { SettingsShortcutsTab } from './settings/SettingsShortcutsTab';
+import { SettingsLinksTab } from './settings/SettingsLinksTab';
 import { SettingsPresetsTab } from './settings/SettingsPresetsTab';
 import { SettingsAdvancedTab } from './settings/SettingsAdvancedTab';
 
-type Tab = 'themes' | 'shortcuts' | 'widgets' | 'advanced' | 'presets';
+type Tab = 'themes' | 'links' | 'widgets' | 'advanced' | 'presets';
 
 export const Settings: React.FC = () => {
     const {
@@ -183,7 +183,7 @@ export const Settings: React.FC = () => {
 
                         {/* tabs */}
                         <div className="flex border-b border-[var(--color-border)] px-2 pt-2 gap-2 bg-[var(--color-bg)] flex-wrap shrink-0">
-                            {['themes', 'shortcuts', 'widgets', 'presets', 'advanced'].map(tab => (
+                            {['themes', 'links', 'widgets', 'presets', 'advanced'].map(tab => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab as Tab)}
@@ -218,8 +218,8 @@ export const Settings: React.FC = () => {
                             )}
 
 
-                            {activeTab === 'shortcuts' && (
-                                <SettingsShortcutsTab
+                            {activeTab === 'links' && (
+                                <SettingsLinksTab
                                     linkGroups={linkGroups}
                                     onUpdateLinks={setLinkGroups}
                                 />

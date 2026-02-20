@@ -242,6 +242,116 @@ export const THEMES: Record<string, Theme> = {
       accent: '#6699cc',
       hover: '#23343f'
     }
+  },
+  rosepine: {
+    name: 'rosé pine',
+    colors: {
+      bg: '#191724',
+      fg: '#e0def4',
+      muted: '#6e6a86',
+      border: '#26233a',
+      accent: '#ebbcba',
+      hover: '#1f1d2e'
+    }
+  },
+  catppuccin: {
+    name: 'catppuccin',
+    colors: {
+      bg: '#1e1e2e',
+      fg: '#cdd6f4',
+      muted: '#6c7086',
+      border: '#313244',
+      accent: '#fab387',
+      hover: '#181825'
+    }
+  },
+  kanagawa: {
+    name: 'kanagawa',
+    colors: {
+      bg: '#1f1f28',
+      fg: '#dcd7ba',
+      muted: '#727169',
+      border: '#2a2a37',
+      accent: '#7e9cd8',
+      hover: '#2a2a37'
+    }
+  },
+  ayu: {
+    name: 'ayu',
+    colors: {
+      bg: '#0d1017',
+      fg: '#bfbdb6',
+      muted: '#565b66',
+      border: '#1c2028',
+      accent: '#e6b450',
+      hover: '#131721'
+    }
+  },
+  poimandres: {
+    name: 'poimandres',
+    colors: {
+      bg: '#1b1e28',
+      fg: '#a6accd',
+      muted: '#506477',
+      border: '#2b3040',
+      accent: '#add7ff',
+      hover: '#232738'
+    }
+  },
+  flexoki: {
+    name: 'flexoki',
+    colors: {
+      bg: '#100f0f',
+      fg: '#cecdc3',
+      muted: '#575653',
+      border: '#282726',
+      accent: '#d0a215',
+      hover: '#1c1b1a'
+    }
+  },
+  vesper: {
+    name: 'vesper',
+    colors: {
+      bg: '#101010',
+      fg: '#b8b8b8',
+      muted: '#505050',
+      border: '#2a2a2a',
+      accent: '#ffc799',
+      hover: '#1a1a1a'
+    }
+  },
+  palenight: {
+    name: 'palenight',
+    colors: {
+      bg: '#292d3e',
+      fg: '#a6accd',
+      muted: '#676e95',
+      border: '#3a3f58',
+      accent: '#89ddff',
+      hover: '#32374d'
+    }
+  },
+  midnight: {
+    name: 'midnight',
+    colors: {
+      bg: '#09090b',
+      fg: '#fafafa',
+      muted: '#71717a',
+      border: '#27272a',
+      accent: '#a78bfa',
+      hover: '#18181b'
+    }
+  },
+  graphite: {
+    name: 'graphite',
+    colors: {
+      bg: '#161616',
+      fg: '#f4f4f4',
+      muted: '#525252',
+      border: '#262626',
+      accent: '#78a9ff',
+      hover: '#1e1e1e'
+    }
   }
 };
 
