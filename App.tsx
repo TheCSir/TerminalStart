@@ -92,7 +92,7 @@ function Attribution() {
       href="https://github.com/TheCSir/TerminalStart"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-2 right-3 font-mono text-[10px] text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors duration-200 opacity-40 hover:opacity-100 select-none z-50 no-underline"
+      className="fixed bottom-2 right-3 font-mono text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors duration-200 opacity-40 hover:opacity-100 select-none z-50 no-underline"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

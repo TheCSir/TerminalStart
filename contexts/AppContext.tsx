@@ -97,6 +97,10 @@ interface AppContextType {
     setIsLayoutLocked: (locked: boolean) => void;
     isResizingEnabled: boolean;
     setIsResizingEnabled: (enabled: boolean) => void;
+    borderGlow: boolean;
+    setBorderGlow: (glow: boolean) => void;
+    animatedLinks: boolean;
+    setAnimatedLinks: (animated: boolean) => void;
     presets: any[];
     setPresets: (presets: any[]) => void;
 
@@ -137,6 +141,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [showWidgetTitles, setShowWidgetTitles] = useStickyState<boolean>(true, 'tui-show-titles');
     const [reserveSettingsSpace, setReserveSettingsSpace] = useStickyState<boolean>(true, 'tui-reserve-settings');
     const [customFont, setCustomFont] = useStickyState<string>('', 'tui-custom-font');
+    const [borderGlow, setBorderGlow] = useStickyState<boolean>(true, 'tui-border-glow');
+    const [animatedLinks, setAnimatedLinks] = useStickyState<boolean>(true, 'tui-animated-links');
 
     const [funOptionsRaw, setFunOptions] = useStickyState<FunOptions>(funDefaults, 'tui-fun-options-v3');
     const [marketConfigRaw, setMarketConfig] = useStickyState<MarketConfig>(marketDefaults, 'tui-market-config');
@@ -466,6 +472,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         activeWidgets, setActiveWidgets,
         isLayoutLocked, setIsLayoutLocked,
         isResizingEnabled, setIsResizingEnabled,
+        borderGlow, setBorderGlow,
+        animatedLinks, setAnimatedLinks,
         presets, setPresets,
         handleSaveCustomTheme,
         handleDeleteCustomTheme,

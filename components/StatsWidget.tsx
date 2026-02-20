@@ -146,7 +146,7 @@ export const StatsWidget: React.FC<StatsWidgetProps> = ({ mode = 'text' }) => {
     if (mode === 'detailed') {
         const memPercent = memory ? Math.round((memory.used / memory.limit) * 100) : 0;
         return (
-            <div className="flex flex-col h-full font-mono text-xs overflow-hidden select-none justify-between py-1">
+            <div className="flex flex-col h-full font-mono text-xs overflow-hidden select-none justify-between py-1 px-2">
                 <div className="overflow-y-auto custom-scrollbar pr-1">
                     {/* Connection Header */}
                     <div className="border-b border-[var(--color-border)] pb-2 mb-2 opacity-90">

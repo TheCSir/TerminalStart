@@ -153,7 +153,7 @@ export const MarketWidget: React.FC<MarketWidgetProps> = ({ symbols, refreshInte
             const statusH = fontSize + 8;
             const bodyH = h - headerH - statusH;
             const sparkW = Math.max(40, Math.min(80, w * 0.15));
-            const padX = 6;
+            const padX = 12;
 
             ctx!.font = `${fontSize}px "JetBrains Mono", monospace`;
             ctx!.textBaseline = 'middle';

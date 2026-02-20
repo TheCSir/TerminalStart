@@ -2,6 +2,7 @@ import React from 'react';
 import { LinkGroup } from '../types';
 import { sanitizeUrl } from '../utils/urlUtils';
 import { LinkIcon } from './LinkIcon';
+import { useAppContext } from '../contexts/AppContext';
 
 interface LinksWidgetProps {
     groups: LinkGroup[];
@@ -9,18 +10,20 @@ interface LinksWidgetProps {
 }
 
 export const LinksWidget: React.FC<LinksWidgetProps> = ({ groups, openInNewTab = true }) => {
+    const { animatedLinks } = useAppContext();
+
     return (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 h-full overflow-y-auto custom-scrollbar px-4 pt-2">
             {groups.map((group) => (
-                <div key={group.category} className="link-group flex flex-col gap-1.5 min-w-0">
+                <div key={group.category} className={`${animatedLinks ? 'link-group' : ''} flex flex-col gap-1.5 min-w-0`}>
                     <h4 className="text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                        <span className="category-prefix text-[var(--color-accent)] opacity-60">//</span>
+                        <span className={`${animatedLinks ? 'category-prefix' : ''} text-[var(--color-accent)] opacity-60`}>//</span>
                         <span className="category-text text-[var(--color-muted)]">
                             {group.category.split('').map((char, i) => (
                                 <span
                                     key={i}
-                                    className="category-char"
-                                    style={{ '--char-index': i } as React.CSSProperties}
+                                    className={animatedLinks ? 'category-char' : ''}
+                                    style={animatedLinks ? { '--char-index': i } as React.CSSProperties : undefined}
                                 >
                                     {char}
                                 </span>
@@ -39,7 +42,7 @@ export const LinksWidget: React.FC<LinksWidgetProps> = ({ groups, openInNewTab =
                             className="group text-[var(--color-muted)] hover:text-[var(--color-fg)] hover:text-shadow-glow transition-all duration-[20ms] text-sm flex items-center gap-1.5"
                             title={link.url}
                         >
-                            <span className="link-arrow text-[var(--color-border)] group-hover:text-[var(--color-accent)] text-sm leading-none">&#x203a;</span>
+                            <span className={`${animatedLinks ? 'link-arrow' : ''} text-[var(--color-border)] group-hover:text-[var(--color-accent)] text-sm leading-none`}>&#x203a;</span>
                             <LinkIcon icon={link.icon} url={link.url} />
                             <span className="truncate">{link.label}</span>
                         </a>

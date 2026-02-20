@@ -28,7 +28,9 @@ export const Settings: React.FC = () => {
         marketConfig, setMarketConfig,
         presets, handleSavePreset, handleLoadPreset, handleDeletePreset,
         widgetRadius, setWidgetRadius,
-        openInNewTab, setOpenInNewTab
+        openInNewTab, setOpenInNewTab,
+        borderGlow, setBorderGlow,
+        animatedLinks, setAnimatedLinks
     } = useAppContext();
 
     const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -266,6 +268,10 @@ export const Settings: React.FC = () => {
                                     onCustomCssChange={setCustomCss}
                                     marketConfig={marketConfig}
                                     onMarketConfigChange={setMarketConfig}
+                                    borderGlow={borderGlow}
+                                    onToggleBorderGlow={() => setBorderGlow(!borderGlow)}
+                                    animatedLinks={animatedLinks}
+                                    onToggleAnimatedLinks={() => setAnimatedLinks(!animatedLinks)}
                                 />
                             )}
 

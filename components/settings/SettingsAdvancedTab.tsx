@@ -41,6 +41,10 @@ interface SettingsAdvancedTabProps {
     onCustomCssChange: (css: string) => void;
     marketConfig?: MarketConfig;
     onMarketConfigChange?: (config: MarketConfig) => void;
+    borderGlow?: boolean;
+    onToggleBorderGlow?: () => void;
+    animatedLinks?: boolean;
+    onToggleAnimatedLinks?: () => void;
 }
 
 export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
@@ -72,6 +76,10 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
     onCustomCssChange,
     marketConfig,
     onMarketConfigChange,
+    borderGlow,
+    onToggleBorderGlow,
+    animatedLinks,
+    onToggleAnimatedLinks,
 }) => {
     const [symbolsInput, setSymbolsInput] = useState(marketConfig?.symbols.join(', ') ?? '');
     return (
@@ -99,6 +107,16 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
                             {reserveSettingsSpace ? '[x]' : '[ ]'}
                         </span>
                         <span className="text-[var(--color-fg)] text-sm group-hover:text-[var(--color-fg)]">Reserve Settings Space</span>
+                    </div>
+
+                    <div
+                        onClick={onToggleBorderGlow}
+                        className="flex items-center gap-2 cursor-pointer select-none group mt-3"
+                    >
+                        <span className="font-mono text-[var(--color-accent)] font-bold">
+                            {borderGlow ? '[x]' : '[ ]'}
+                        </span>
+                        <span className="text-[var(--color-fg)] text-sm group-hover:text-[var(--color-fg)]">Border Glow Effect</span>
                     </div>
 
                     <div className="flex flex-col gap-1 mt-2">
@@ -236,11 +254,19 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
 
             <div className="border border-[var(--color-border)] p-4">
                 <h3 className="text-[var(--color-accent)] font-bold mb-2">Link Behavior</h3>
-                <div onClick={() => onToggleOpenInNewTab?.()} className="flex items-center gap-2 cursor-pointer select-none group">
-                    <span className="font-mono text-[var(--color-accent)] font-bold">
-                        {openInNewTab ? '[x]' : '[ ]'}
-                    </span>
-                    <span className="text-[var(--color-fg)] group-hover:text-[var(--color-accent)]">Open Links in New Tab</span>
+                <div className="flex flex-col gap-3">
+                    <div onClick={() => onToggleOpenInNewTab?.()} className="flex items-center gap-2 cursor-pointer select-none group">
+                        <span className="font-mono text-[var(--color-accent)] font-bold">
+                            {openInNewTab ? '[x]' : '[ ]'}
+                        </span>
+                        <span className="text-[var(--color-fg)] group-hover:text-[var(--color-accent)]">Open Links in New Tab</span>
+                    </div>
+                    <div onClick={() => onToggleAnimatedLinks?.()} className="flex items-center gap-2 cursor-pointer select-none group">
+                        <span className="font-mono text-[var(--color-accent)] font-bold">
+                            {animatedLinks ? '[x]' : '[ ]'}
+                        </span>
+                        <span className="text-[var(--color-fg)] group-hover:text-[var(--color-accent)]">Animated Links</span>
+                    </div>
                 </div>
             </div>
 
@@ -592,7 +618,7 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
             </div>
 
             <div className="text-[10px] text-[var(--color-muted)] mt-6 text-center opacity-50 font-mono">
-                v2.1
+                v2.2
             </div>
         </div>
     );

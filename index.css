@@ -19,6 +19,29 @@
     border-radius: 0px !important;
 }
 
+/* progressive border color on hover — SVG stroke-dash along perimeter from top-left */
+.widget-glow {
+    position: relative;
+}
+
+.widget-glow-border {
+    stroke-dashoffset: var(--perimeter);
+    opacity: 0;
+    transition: opacity 0.3s ease, stroke-dashoffset 0s linear 0.3s;
+}
+
+.widget-glow:hover .widget-glow-border {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    transition: stroke-dashoffset 0.8s ease-out, opacity 0.1s ease;
+}
+
+/* title glow on widget hover */
+.widget-glow:hover .widget-title {
+    color: var(--color-accent);
+    text-shadow: 0 0 8px var(--color-accent);
+}
+
 /* link arrow animations */
 .link-arrow {
     display: inline-block;
@@ -91,6 +114,31 @@ a:hover .link-arrow {
     0%   { color: var(--color-muted); text-shadow: none; }
     50%  { color: var(--color-accent); text-shadow: 0 0 6px var(--color-accent); }
     100% { color: rgba(255, 255, 255, 0.6); text-shadow: none; }
+}
+
+/* disable all link animations when setting is off */
+.links-static .link-arrow {
+    animation: none !important;
+    text-shadow: none !important;
+    transform: none !important;
+}
+
+.links-static a:hover .link-arrow {
+    animation: none !important;
+    text-shadow: none !important;
+    transform: none !important;
+}
+
+.links-static .link-group:hover .category-prefix {
+    animation: none !important;
+    text-shadow: none !important;
+    transform: none !important;
+}
+
+.links-static .link-group:hover .category-char {
+    animation: none !important;
+    text-shadow: none !important;
+    color: inherit !important;
 }
 
 /* scrollbar */
