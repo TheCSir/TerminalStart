@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="https://dc.missuo.ru/file/1472237296475443202" width="72" alt="TerminalStart Icon">
+  <img src="extension/icon128.png" width="72" alt="TerminalStart Icon">
 </p>
 
 <h1 align="center">TerminalStart</h1>
@@ -11,7 +11,11 @@
 </p>
 
 <p align="center">
-  <img src="https://dc.missuo.ru/file/1472233821897494592" width="900" alt="TerminalStart Preview">
+  <img src="ScreenShots/mainPage.png" width="900" alt="TerminalStart Preview">
+</p>
+
+<p align="center">
+  <img src="ScreenShots/settingsPage.png" width="900" alt="TerminalStart Settings">
 </p>
 
 ---
