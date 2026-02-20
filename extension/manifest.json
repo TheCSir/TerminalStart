@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "description": "A beautiful, customizable TUI-style new tab dashboard with widgets, themes, and more.",
   "icons": {
+    "16": "icon16.png",
     "48": "icon48.png",
-    "96": "icon96.png"
+    "96": "icon96.png",
+    "128": "icon128.png"
   },
   "chrome_url_overrides": {
     "newtab": "newtab.html"
