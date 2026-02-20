@@ -155,12 +155,36 @@ async function fetchTwelveData(symbol: string, apiKey: string): Promise<MarketQu
     };
 }
 
+// --- Permission helper ---
+declare const chrome: any;
+
+const PROVIDER_ORIGINS: Record<MarketProvider, string[]> = {
+    yahoo: ['*://query1.finance.yahoo.com/*'],
+    finnhub: ['*://finnhub.io/*'],
+    twelvedata: ['*://api.twelvedata.com/*'],
+};
+
+async function checkHostPermission(provider: MarketProvider): Promise<boolean> {
+    if (typeof chrome === 'undefined' || !chrome.permissions) return true;
+    const origins = PROVIDER_ORIGINS[provider];
+    return chrome.permissions.contains({ origins });
+}
+
+export async function requestHostPermission(provider: MarketProvider): Promise<boolean> {
+    if (typeof chrome === 'undefined' || !chrome.permissions) return true;
+    const origins = PROVIDER_ORIGINS[provider];
+    return chrome.permissions.request({ origins });
+}
+
 // --- Dispatcher ---
 async function fetchSymbol(
     symbol: string,
     provider: MarketProvider,
     apiKey?: string,
 ): Promise<MarketQuote> {
+    const hasPermission = await checkHostPermission(provider);
+    if (!hasPermission) throw new Error('Host permission not granted');
+
     switch (provider) {
         case 'finnhub':
             if (!apiKey) throw new Error('Finnhub requires an API key');
@@ -187,6 +211,7 @@ export function useMarketData(
         return [];
     });
     const [loading, setLoading] = useState(true);
+    const [needsPermission, setNeedsPermission] = useState(false);
     const [lastUpdate, setLastUpdate] = useState<number | null>(() => {
         const cached = loadCache(provider);
         return cached?.timestamp ?? null;
@@ -199,6 +224,14 @@ export function useMarketData(
             setLoading(false);
             return;
         }
+
+        const hasPermission = await checkHostPermission(provider);
+        if (!hasPermission) {
+            setNeedsPermission(true);
+            setLoading(false);
+            return;
+        }
+        setNeedsPermission(false);
 
         setLoading(true);
         const results = await Promise.all(
@@ -252,5 +285,5 @@ export function useMarketData(
         return () => clearInterval(timerRef.current);
     }, [fetchAll, refreshInterval]);
 
-    return { quotes, loading, lastUpdate, refetch: fetchAll };
+    return { quotes, loading, lastUpdate, needsPermission, refetch: fetchAll };
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useMarketData } from '../hooks/useMarketData';
+import { useMarketData, requestHostPermission } from '../hooks/useMarketData';
 import { MarketQuote, MarketProvider } from '../types';
 
 interface MarketWidgetProps {
@@ -12,7 +12,7 @@ interface MarketWidgetProps {
 export const MarketWidget: React.FC<MarketWidgetProps> = ({ symbols, refreshInterval, provider = 'yahoo', apiKey }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { quotes, loading, lastUpdate } = useMarketData(symbols, refreshInterval, provider, apiKey);
+    const { quotes, loading, lastUpdate, needsPermission, refetch } = useMarketData(symbols, refreshInterval, provider, apiKey);
     const quotesRef = useRef<MarketQuote[]>(quotes);
     const loadingRef = useRef(loading);
     const lastUpdateRef = useRef(lastUpdate);
@@ -352,6 +352,22 @@ export const MarketWidget: React.FC<MarketWidgetProps> = ({ symbols, refreshInte
             canvas.removeEventListener('wheel', handleWheel);
         };
     }, []);
+
+    if (needsPermission) {
+        return (
+            <div className="w-full h-full flex items-center justify-center">
+                <button
+                    onClick={async () => {
+                        const granted = await requestHostPermission(provider);
+                        if (granted) refetch();
+                    }}
+                    className="px-4 py-2 text-xs font-mono border border-[var(--color-border)] text-[var(--color-fg)] bg-[var(--color-hover)] hover:bg-[var(--color-border)] transition-colors cursor-pointer"
+                >
+                    click to allow market data access
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div ref={containerRef} className="w-full h-full">
