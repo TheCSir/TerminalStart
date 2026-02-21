@@ -29,10 +29,15 @@ export interface Theme {
 }
 
 export interface TodoItem {
-  id: number;
+  id: number | string;
   text: string;
   done: boolean;
   due?: string;
+}
+
+export interface TodoistConfig {
+  apiKey: string;
+  enabled: boolean;
 }
 
 export interface Link {

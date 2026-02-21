@@ -30,7 +30,8 @@ export const Settings: React.FC = () => {
         widgetRadius, setWidgetRadius,
         openInNewTab, setOpenInNewTab,
         borderGlow, setBorderGlow,
-        animatedLinks, setAnimatedLinks
+        animatedLinks, setAnimatedLinks,
+        todoistConfig, setTodoistConfig
     } = useAppContext();
 
     const [isButtonVisible, setIsButtonVisible] = useState(false);
@@ -272,6 +273,8 @@ export const Settings: React.FC = () => {
                                     onToggleBorderGlow={() => setBorderGlow(!borderGlow)}
                                     animatedLinks={animatedLinks}
                                     onToggleAnimatedLinks={() => setAnimatedLinks(!animatedLinks)}
+                                    todoistConfig={todoistConfig}
+                                    onTodoistConfigChange={setTodoistConfig}
                                 />
                             )}
 

@@ -1,58 +1,107 @@
 import React, { useState } from 'react';
-import { TodoItem } from '@/types';
-import { extractTime } from '@/utils/todoUtils';
+import { TodoItem, TodoistConfig } from '@/types';
+import { extractTime, extractDueForTodoist } from '@/utils/todoUtils';
+import { useTodoistSync, requestTodoistPermission } from '@/hooks/useTodoistSync';
 
 interface TodoWidgetProps {
     tasks: TodoItem[];
     setTasks: (tasks: TodoItem[]) => void;
+    todoistConfig: TodoistConfig;
 }
 
-export const TodoWidget: React.FC<TodoWidgetProps> = ({ tasks, setTasks }) => {
+export const TodoWidget: React.FC<TodoWidgetProps> = ({ tasks, setTasks, todoistConfig }) => {
     const [newTaskText, setNewTaskText] = useState('');
 
-    const toggleTask = (id: number) => {
-        setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+    const todoist = useTodoistSync(todoistConfig);
+    const isTodoistMode = todoistConfig.enabled && !!todoistConfig.apiKey;
+
+    const effectiveTasks = isTodoistMode ? todoist.tasks : tasks;
+
+    const toggleTask = (id: number | string) => {
+        if (isTodoistMode) {
+            const task = todoist.tasks.find(t => t.id === id);
+            if (task) todoist.toggleTask(String(id), task.done);
+        } else {
+            setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
+        }
     };
 
-    const removeTask = (e: React.MouseEvent, id: number) => {
+    const removeTask = (e: React.MouseEvent, id: number | string) => {
         e.stopPropagation();
-        setTasks(tasks.filter(t => t.id !== id));
-    }
+        if (isTodoistMode) {
+            todoist.removeTask(String(id));
+        } else {
+            setTasks(tasks.filter(t => t.id !== id));
+        }
+    };
 
     const addTask = (e: React.FormEvent) => {
         e.preventDefault();
         if (!newTaskText.trim()) return;
 
-        const { text, due } = extractTime(newTaskText);
+        const { text, due } = isTodoistMode
+            ? extractDueForTodoist(newTaskText)
+            : extractTime(newTaskText);
 
-        const newTask: TodoItem = {
-            id: Date.now(),
-            text: text,
-            done: false,
-            due: due
-        };
-
-        setTasks([...tasks, newTask]);
+        if (isTodoistMode) {
+            todoist.addTask(text, due);
+        } else {
+            const newTask: TodoItem = {
+                id: Date.now(),
+                text: text,
+                done: false,
+                due: due
+            };
+            setTasks([...tasks, newTask]);
+        }
         setNewTaskText('');
     };
 
-    const doneCount = tasks.filter(t => t.done).length;
+    const doneCount = effectiveTasks.filter(t => t.done).length;
 
     return (
         <div className="h-full flex flex-col">
             <div className="text-[var(--color-muted)] mb-2 text-xs flex justify-between">
-                <span>{tasks.length - doneCount} remaining</span>
-                <span>{doneCount} done</span>
+                <span>{effectiveTasks.length - doneCount} remaining</span>
+                <span>
+                    {isTodoistMode && todoist.loading && <span className="opacity-60">syncing... </span>}
+                    {doneCount} done
+                </span>
             </div>
-            
+
+            {isTodoistMode && todoist.error && (
+                <div className="text-red-500 text-[10px] mb-1 opacity-80">
+                    todoist: {todoist.error}
+                </div>
+            )}
+
+            {isTodoistMode && todoist.needsPermission && (
+                <div className="flex-1 flex items-center justify-center">
+                    <button
+                        onClick={async () => {
+                            const granted = await requestTodoistPermission();
+                            if (granted) todoist.refetch();
+                        }}
+                        className="border border-[var(--color-border)] text-[var(--color-accent)] px-3 py-1 text-xs hover:bg-[var(--color-hover)]"
+                    >
+                        [ GRANT TODOIST ACCESS ]
+                    </button>
+                </div>
+            )}
+
             <ul className="flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-0">
-                {tasks.length === 0 && (
+                {effectiveTasks.length === 0 && !todoist.loading && (
                     <li className="text-[var(--color-muted)] italic text-sm py-2 text-center opacity-50">
-                        empty list...
+                        {isTodoistMode ? 'no tasks in todoist' : 'empty list...'}
                     </li>
                 )}
-                {tasks.map(task => (
-                    <li 
+                {effectiveTasks.length === 0 && isTodoistMode && todoist.loading && (
+                    <li className="text-[var(--color-muted)] italic text-sm py-2 text-center opacity-50">
+                        syncing...
+                    </li>
+                )}
+                {effectiveTasks.map(task => (
+                    <li
                         key={task.id}
                         onClick={() => toggleTask(task.id)}
                         className={`
@@ -76,7 +125,7 @@ export const TodoWidget: React.FC<TodoWidgetProps> = ({ tasks, setTasks }) => {
                                 </span>
                             )}
                         </div>
-                        <button 
+                        <button
                             onClick={(e) => removeTask(e, task.id)}
                             className="opacity-0 group-hover:opacity-100 text-[var(--color-muted)] hover:text-red-500 px-2 shrink-0"
                         >
@@ -88,11 +137,11 @@ export const TodoWidget: React.FC<TodoWidgetProps> = ({ tasks, setTasks }) => {
 
             <form onSubmit={addTask} className="mt-2 pt-2 border-t border-[var(--color-border)] flex gap-2">
                 <span className="text-[var(--color-accent)] font-bold">{'>'}</span>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     value={newTaskText}
                     onChange={(e) => setNewTaskText(e.target.value)}
-                    placeholder="add task (e.g. 'meet john 2pm')" 
+                    placeholder="add task (e.g. 'meet john 2pm')"
                     className="w-full bg-transparent border-none outline-none text-[var(--color-fg)] placeholder-[var(--color-muted)] text-sm select-text"
                 />
             </form>

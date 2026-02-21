@@ -117,6 +117,7 @@ function AppContent() {
     customFont,
     funOptions,
     marketConfig,
+    todoistConfig,
     activeWidgets,
     isLayoutLocked,
     isResizingEnabled,
@@ -227,7 +228,7 @@ function AppContent() {
                 case 'weather':
                     return <TuiBox {...boxProps} title="forecast.py"><WeatherWidget mode={weatherMode} unit={tempUnit} /></TuiBox>;
                 case 'todo':
-                    return <TuiBox {...boxProps} title="todo.txt"><TodoWidget tasks={todos} setTasks={setTodos} /></TuiBox>;
+                    return <TuiBox {...boxProps} title="todo.txt"><TodoWidget tasks={todos} setTasks={setTodos} todoistConfig={todoistConfig} /></TuiBox>;
                 case 'links':
                     return <TuiBox {...boxProps} title="links.href"><LinksWidget groups={linkGroups} openInNewTab={openInNewTab} /></TuiBox>;
                 case 'donut':

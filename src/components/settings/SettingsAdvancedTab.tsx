@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AsciiSlider } from '@/components/ui/AsciiSlider';
-import { MarketConfig, MarketProvider } from '@/types';
+import { MarketConfig, MarketProvider, TodoistConfig } from '@/types';
 
 interface SettingsAdvancedTabProps {
     showWidgetTitles: boolean;
@@ -45,6 +45,8 @@ interface SettingsAdvancedTabProps {
     onToggleBorderGlow?: () => void;
     animatedLinks?: boolean;
     onToggleAnimatedLinks?: () => void;
+    todoistConfig?: TodoistConfig;
+    onTodoistConfigChange?: (config: TodoistConfig) => void;
 }
 
 export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
@@ -80,6 +82,8 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
     onToggleBorderGlow,
     animatedLinks,
     onToggleAnimatedLinks,
+    todoistConfig,
+    onTodoistConfigChange,
 }) => {
     const [symbolsInput, setSymbolsInput] = useState(marketConfig?.symbols.join(', ') ?? '');
     return (
@@ -269,6 +273,41 @@ export const SettingsAdvancedTab: React.FC<SettingsAdvancedTabProps> = ({
                     </div>
                 </div>
             </div>
+
+            {/* todoist integration */}
+            {activeWidgets['todo'] && todoistConfig && onTodoistConfigChange && (
+                <div className="border border-[var(--color-border)] p-4 space-y-3">
+                    <h3 className="text-[var(--color-accent)] font-bold">⬡ Todo Widget</h3>
+
+                    <div
+                        onClick={() => onTodoistConfigChange({ ...todoistConfig, enabled: !todoistConfig.enabled })}
+                        className="flex items-center gap-2 cursor-pointer select-none group"
+                    >
+                        <span className="font-mono text-[var(--color-accent)] font-bold">
+                            {todoistConfig.enabled ? '[x]' : '[ ]'}
+                        </span>
+                        <span className="text-[var(--color-fg)] text-sm group-hover:text-[var(--color-accent)]">
+                            Sync with Todoist
+                        </span>
+                    </div>
+
+                    {todoistConfig.enabled && (
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[var(--color-muted)] text-xs">Todoist API Token</span>
+                            <input
+                                type="password"
+                                placeholder="Enter your Todoist API token"
+                                className="bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-fg)] px-2 py-1 text-sm focus:border-[var(--color-accent)] outline-none w-full select-text font-mono"
+                                value={todoistConfig.apiKey}
+                                onChange={(e) => onTodoistConfigChange({ ...todoistConfig, apiKey: e.target.value })}
+                            />
+                            <span className="text-[var(--color-muted)] text-[10px] opacity-60">
+                                Settings &gt; Integrations &gt; Developer on todoist.com. Stored locally in your browser.
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* market / stocks */}
             {activeWidgets['market'] && marketConfig && onMarketConfigChange && (

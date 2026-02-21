@@ -21,3 +21,22 @@ export const extractTime = (str: string): { text: string; due?: string } => {
     }
     return { text: str.trim() };
 };
+
+// Todoist mode: extract natural-language date/time phrases and pass to Todoist's NLP.
+// Splits on date trigger words so everything from that point becomes due_string.
+// e.g. "meet john tomorrow at 2pm" -> { text: "meet john", due: "tomorrow at 2pm" }
+// e.g. "buy groceries next monday" -> { text: "buy groceries", due: "next monday" }
+// Falls back to extractTime for plain time-only inputs like "call mom 3pm".
+export const extractDueForTodoist = (str: string): { text: string; due?: string } => {
+    const dateTrigger = /\b(today|tonight|tomorrow|next\s+\w+|every\s+\w+|(?:mon|tue|wed|thu|fri|sat|sun)\w*|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\s+\d{1,2})\b/i;
+    const match = str.match(dateTrigger);
+
+    if (match && match.index !== undefined) {
+        const due = str.slice(match.index).trim();
+        const text = str.slice(0, match.index).replace(/\s+/g, ' ').trim();
+        return { text: text || "Task", due };
+    }
+
+    // Fall back to time-only extraction
+    return extractTime(str);
+};

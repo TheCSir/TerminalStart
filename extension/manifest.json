@@ -15,7 +15,8 @@
   "optional_host_permissions": [
     "*://query1.finance.yahoo.com/*",
     "*://finnhub.io/*",
-    "*://api.twelvedata.com/*"
+    "*://api.twelvedata.com/*",
+    "*://api.todoist.com/*"
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' data: https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src *;"

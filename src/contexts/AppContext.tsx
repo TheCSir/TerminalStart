@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useStickyState } from '@/hooks/useStickyState';
 import { THEMES, LINKS_DATA } from '@/constants';
-import { TodoItem, LinkGroup, Theme, Layouts, FunOptions, MarketConfig } from '@/types';
+import { TodoItem, LinkGroup, Theme, Layouts, FunOptions, MarketConfig, TodoistConfig } from '@/types';
 
 // Default Layouts
 const DEFAULT_LAYOUTS: Layouts = {
@@ -35,6 +35,11 @@ const DEFAULT_LAYOUTS: Layouts = {
     { i: 'links', x: 0, y: 18, w: 6, h: 4, minW: 2, minH: 2 },
     { i: 'snake', x: 0, y: 22, w: 2, h: 4, minW: 1, minH: 2 }
   ]
+};
+
+const todoistDefaults: TodoistConfig = {
+    apiKey: '',
+    enabled: false,
 };
 
 const marketDefaults: MarketConfig = {
@@ -91,6 +96,8 @@ interface AppContextType {
     setFunOptions: (options: FunOptions) => void;
     marketConfig: MarketConfig;
     setMarketConfig: (config: MarketConfig) => void;
+    todoistConfig: TodoistConfig;
+    setTodoistConfig: (config: TodoistConfig) => void;
     activeWidgets: Record<string, boolean>;
     setActiveWidgets: (widgets: Record<string, boolean>) => void;
     isLayoutLocked: boolean;
@@ -148,6 +155,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [marketConfigRaw, setMarketConfig] = useStickyState<MarketConfig>(marketDefaults, 'tui-market-config');
     // merge defaults for backward compat (existing users lack provider/apiKey)
     const marketConfig: MarketConfig = { ...marketDefaults, ...marketConfigRaw };
+
+    const [todoistConfigRaw, setTodoistConfig] = useStickyState<TodoistConfig>(todoistDefaults, 'tui-todoist-config');
+    const todoistConfig: TodoistConfig = { ...todoistDefaults, ...todoistConfigRaw };
 
     // merge defaults
     const funOptions = {
@@ -323,6 +333,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setWidgetRadius(0);
         setFunOptions(funDefaults);
         setMarketConfig(marketDefaults);
+        setTodoistConfig(todoistDefaults);
     };
 
     const removeExtraWidget = (key: string) => {
@@ -421,7 +432,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                 funOptions,
                 widgetRadius,
                 openInNewTab,
-                marketConfig
+                marketConfig,
+                todoistConfig
             }
         };
         setPresets([...presets, newPreset]);
@@ -445,6 +457,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         if (d.widgetRadius !== undefined) setWidgetRadius(d.widgetRadius);
         if (d.openInNewTab !== undefined) setOpenInNewTab(d.openInNewTab);
         if (d.marketConfig) setMarketConfig(d.marketConfig);
+        if (d.todoistConfig) setTodoistConfig(d.todoistConfig);
     };
 
     const handleDeletePreset = (id: number) => {
@@ -469,6 +482,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         customFont, setCustomFont,
         funOptions, setFunOptions,
         marketConfig, setMarketConfig,
+        todoistConfig, setTodoistConfig,
         activeWidgets, setActiveWidgets,
         isLayoutLocked, setIsLayoutLocked,
         isResizingEnabled, setIsResizingEnabled,
