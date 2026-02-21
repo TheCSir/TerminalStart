@@ -34,9 +34,9 @@
         graphite: { bg: '#161616', fg: '#f4f4f4', muted: '#525252', border: '#262626', accent: '#78a9ff', hover: '#1e1e1e' }
     };
     try {
-        var themeName = JSON.parse(localStorage.getItem('tui-theme') || '"greyish"');
+        var themeName = JSON.parse(localStorage.getItem('tui-theme') || '"midnight"');
         var customThemes = JSON.parse(localStorage.getItem('tui-custom-themes') || '{}');
-        var theme = (customThemes[themeName] && customThemes[themeName].colors) || BUILTIN_THEMES[themeName] || BUILTIN_THEMES.greyish;
+        var theme = (customThemes[themeName] && customThemes[themeName].colors) || BUILTIN_THEMES[themeName] || BUILTIN_THEMES.midnight;
         var r = document.documentElement.style;
         r.setProperty('--color-bg', theme.bg);
         r.setProperty('--color-fg', theme.fg);

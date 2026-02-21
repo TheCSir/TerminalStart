@@ -48,10 +48,10 @@
                 graphite: { bg: '#161616', fg: '#f4f4f4', muted: '#525252', border: '#262626', accent: '#78a9ff', hover: '#1e1e1e' }
             };
             try {
-                var themeName = JSON.parse(localStorage.getItem('tui-theme') || '"greyish"');
+                var themeName = JSON.parse(localStorage.getItem('tui-theme') || '"midnight"');
                 // try custom themes first, then built-in
                 var customThemes = JSON.parse(localStorage.getItem('tui-custom-themes') || '{}');
-                var theme = (customThemes[themeName] && customThemes[themeName].colors) || BUILTIN_THEMES[themeName] || BUILTIN_THEMES.greyish;
+                var theme = (customThemes[themeName] && customThemes[themeName].colors) || BUILTIN_THEMES[themeName] || BUILTIN_THEMES.midnight;
                 var r = document.documentElement.style;
                 r.setProperty('--color-bg', theme.bg);
                 r.setProperty('--color-fg', theme.fg);
@@ -66,13 +66,13 @@
     <style>
         /* prevent FOUC */
         html {
-            background-color: var(--color-bg, #222222);
-            color: var(--color-fg, #aaaaaa);
+            background-color: var(--color-bg, #09090b);
+            color: var(--color-fg, #fafafa);
         }
 
         body {
-            background-color: var(--color-bg, #222222);
-            color: var(--color-fg, #aaaaaa);
+            background-color: var(--color-bg, #09090b);
+            color: var(--color-fg, #fafafa);
         }
     </style>
 </head>

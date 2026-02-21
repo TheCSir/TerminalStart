@@ -123,7 +123,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [currentTheme, setCurrentTheme] = useStickyState<string>('greyish', 'tui-theme');
+    const [currentTheme, setCurrentTheme] = useStickyState<string>('midnight', 'tui-theme');
     const [customThemes, setCustomThemes] = useStickyState<Record<string, Theme>>({}, 'tui-custom-themes');
     const [isThemeMakerOpen, setIsThemeMakerOpen] = useState(false);
 
@@ -245,7 +245,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     // Apply Theme
     useEffect(() => {
-        const theme = allThemes[currentTheme] || THEMES['greyish'];
+        const theme = allThemes[currentTheme] || THEMES['midnight'];
         const root = document.documentElement;
 
         root.style.setProperty('--color-bg', theme.colors.bg);
@@ -291,7 +291,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         delete newThemes[name];
         setCustomThemes(newThemes);
         if (currentTheme === name) {
-            setCurrentTheme('greyish');
+            setCurrentTheme('midnight');
         }
     };
 

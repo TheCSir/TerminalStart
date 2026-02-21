@@ -11,6 +11,10 @@
 </p>
 
 <p align="center">
+  <a href="https://thecsir.github.io/TerminalStart/">Live Demo</a>
+</p>
+
+<p align="center">
   <img src="docs/mainPage.png" width="900" alt="TerminalStart Preview">
 </p>
 
