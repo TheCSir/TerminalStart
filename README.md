@@ -11,11 +11,11 @@
 </p>
 
 <p align="center">
-  <img src="screenShots/mainPage.png" width="900" alt="TerminalStart Preview">
+  <img src="docs/mainPage.png" width="900" alt="TerminalStart Preview">
 </p>
 
 <p align="center">
-  <img src="screenShots/settingsPage.png" width="900" alt="TerminalStart Settings">
+  <img src="docs/settingsPage.png" width="900" alt="TerminalStart Settings">
 </p>
 
 ---
@@ -57,7 +57,7 @@ npm run build
 4. Package:
 
 ```
-python package_addon.py
+python scripts/package_addon.py
 ```
 
 Output: `terminal-start-v1.0.0.zip`

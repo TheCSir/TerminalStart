@@ -10,7 +10,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Build artifacts (not dist — we track the built extension)
+# Build artifacts
+dist
 dist-ssr
 *.local
 

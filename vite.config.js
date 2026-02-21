@@ -7,7 +7,7 @@ export default defineConfig({
   // recursive alias for absolute imports
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './')
+      '@': path.resolve(__dirname, './src')
     }
   },
   base: './',
